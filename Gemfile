@@ -20,6 +20,7 @@ gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://gith
+ gem 'thin'
 
 
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -39,8 +40,7 @@ group :development, :test do
   gem 'byebug'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv', '~> 2.0', require: false
-  gem 'thin'
-
+ 
  gem 'capistrano-passenger'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

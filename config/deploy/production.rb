@@ -31,7 +31,8 @@ namespace :fix do
   end
   task :start do
     on roles(:app) do 
-      run "cd #{current_path}; #{asset_env} rails s -e production "
+     run "cd #{current_path}; su - deploy -c `bundle exec thin start -C
+config/thin.yml`"
     end 
   end
 end
