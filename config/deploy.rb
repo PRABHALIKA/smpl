@@ -10,6 +10,7 @@ set :repo_url, 'https://github.com/PRABHALIKA/smpl.git'
 set :deploy_to, "/home/deployer/apps/smpl"
 
 set :pty, true
+set :use_sudo, true
 
 set :format, :pretty
 
