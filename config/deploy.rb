@@ -16,7 +16,8 @@ set :format, :pretty
 
 set :rbenv_ruby, '2.1.2'
 
-
+set :to_symlink,
+  ["config/database.yml","public/assets"]
 
 # Set the post-deployment instructions here.
 # Once the deployment is complete, Capistrano
