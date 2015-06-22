@@ -4,6 +4,8 @@ require 'capistrano/setup'
 # Include default deployment tasks
 require 'capistrano/deploy'
 
+default_run_options[:shell] = false
+
 # Include tasks from other gems included in your Gemfile
 #
 # For documentation on these, see for example:

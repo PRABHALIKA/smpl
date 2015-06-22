@@ -42,7 +42,48 @@ set :to_symlink,
       execute "service thin restart"  ## -> line you should add
     end
   end
+#================== tasks ====================
+namespace :deploy do
+  task :copy_config_files
+  on roles (:app) do
+    db_config = "#{path}/database.yml"
+    thin_config = "#{path}/thin_config.yml"
+    run "cp #{db_config} #{release_path}/config/database.yml"
+    run "cp #{thin_config} #{release_path}/"
+  end
 
+  task :precompile do
+    run "cd #{release_path}; source $HOME/.bash_profile && bundle exec rake assets:precompile RAILS_ENV=production"
+  end
+
+  task :migration do
+    run "cd #{release_path}; source $HOME/.bash_profile && bundle exec rake db:migrate RAILS_ENV=production"
+  end
+
+  task :config_nginx do
+    pre = File.basename(previous_release)
+    cur = File.basename(release_path)
+    run "#{sudo} sed 's/#{pre}/#{cur}/g' /etc/nginx/sites-available/default"
+  end
+
+  task :restart_thin_server do
+    run "cd #{previous_release}; source $HOME/.bash_profile && thin stop -C thin_config.yml"
+    run "cd #{release_path}; source $HOME/.bash_profile && thin start -C thin_config.yml"
+  end
+
+  task :restart_nginx do
+    run "#{sudo} service nginx restart"
+  end
+
+end
+
+after "deploy:finalize_update", 
+# after this step, excute the following task
+      "deploy:copy_config_files", 
+      "deploy:precompile", 
+      "deploy:config_nginx",
+      "deploy:restart_thin_server"
+      "deploy:restart_nginx"
 
 #   after :publishing, :restart
 

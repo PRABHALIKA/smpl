@@ -22,16 +22,18 @@ set :ssh_options, {
 }
 set :deploy_to, "/home/deployer/apps/smpl"
 before "deploy:restart", "fix:permission"
-
 namespace :fix do
   task :permission do
   	on  roles(:app) do
     run  "chown -R deploy:deploy #{deploy_to}"
   	end
   end
+ end 
+ before "deploy:restart", "start:start"
+namespace :start do
   task :start do
     on roles(:app) do 
-     run "cd /home/deployer/apps/smpl; su - deploy -c `bundle exec thin start -C
+     run "cd /home/deployer/apps/smpl/current; `bundle exec thin start -C
 config/thin.yml`"
     end 
   end
